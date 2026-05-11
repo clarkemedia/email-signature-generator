@@ -6,7 +6,12 @@
   <title>Free Email Signature Generator | No Sign-Up, Open Source</title>
   <meta name="description" content="Create a professional HTML email signature in seconds. Fully customizable with live preview, logo upload, custom colours and fonts. Free, open-source, no sign-up, no tracking. Works with Outlook, Gmail and Apple Mail.">
   <meta name="keywords" content="email signature generator, free email signature, HTML email signature, email signature maker, email signature creator, outlook signature, gmail signature, professional email signature">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="author" content="Eoin McMahon">
+  <meta name="application-name" content="Free Email Signature Generator">
   <link rel="canonical" href="https://signatures.clarkemedia.ie/">
+  <link rel="alternate" type="text/plain" href="https://signatures.clarkemedia.ie/llms.txt" title="LLM-readable description">
+  <link rel="author" href="https://signatures.clarkemedia.ie/humans.txt">
   <meta property="og:title" content="Free Email Signature Generator | No Sign-Up, Open Source">
   <meta property="og:description" content="Create a professional HTML email signature in seconds. Fully customizable, free, open-source, no tracking.">
   <meta property="og:type" content="website">
@@ -44,6 +49,78 @@
     "license": "https://opensource.org/licenses/MIT",
     "isAccessibleForFree": true,
     "browserRequirements": "Requires a modern web browser"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this email signature generator really free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, completely free. No trial period, no feature gates, no hidden costs, no per-user fees. The full tool is available at no charge under the MIT open-source license."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to create an account or sign up?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. There is no sign-up, no login, and no account creation required. Just open the page and start building your signature immediately."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data safe? Do you track anything?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Everything runs entirely in your browser. No data is sent to any server. There are no cookies, no analytics, and no tracking scripts. Your information never leaves your device."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work with Outlook, Gmail and Apple Mail?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The generated signatures work with Microsoft Outlook (new, classic, and Mac versions), Gmail, and Apple Mail. Step-by-step setup instructions are included for each email client."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I add my company logo to the signature?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can paste a logo URL or upload an image file from your computer. For best results with dark mode email clients, use a JPEG with a solid background rather than a transparent PNG."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What makes this different from paid email signature generators?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Unlike paid alternatives, this tool requires no account, has no monthly fees, adds no branding or backlinks to your signature, collects no data, and is fully open source. You get every feature with zero strings attached."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this for my whole team?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. There are no per-user limits. Each team member can generate their own signature independently. You can also self-host the tool on your own server for your organisation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I self-host this tool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It is a single HTML file with no dependencies. Download it from GitHub and serve it from any web server, or just open it locally in a browser. No build step or server-side language required."
+        }
+      }
+    ]
   }
   </script>
   <style>
@@ -359,6 +436,35 @@
       line-height: 1.6;
       margin: 0 0 10px;
     }
+    .seo-content details {
+      margin-bottom: 6px;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .seo-content summary {
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      padding: 10px 14px;
+      cursor: pointer;
+      background: #fafafa;
+      list-style: none;
+    }
+    .seo-content summary::-webkit-details-marker { display: none; }
+    .seo-content summary::before {
+      content: '+';
+      display: inline-block;
+      width: 16px;
+      font-weight: 600;
+      color: #17599A;
+    }
+    .seo-content details[open] summary::before { content: '\2212'; }
+    .seo-content details[open] summary { border-bottom: 1px solid #eee; }
+    .seo-content details p {
+      padding: 10px 14px 10px 30px;
+      margin: 0;
+    }
 
     /* Footer */
     .page-footer {
@@ -622,6 +728,40 @@
     <p>Most email signature generators online are either paid, subscription-based, or add their own branding and backlinks to your signature. This tool is different. It is completely free, open source, and does not track you or add any hidden content to your signature. Everything runs in your browser and nothing is sent to a server.</p>
     <p>It works with all major email clients including Microsoft Outlook (new and classic), Outlook for Mac, Gmail, and Apple Mail. You can customise every detail of your signature including your name, job title, company, phone number, email address, website, company logo, accent colour, font, social media links, and a confidentiality disclaimer. Any field you leave blank is automatically hidden from the output.</p>
     <p>The generated signatures use web-safe fonts and table-based HTML layouts that render consistently across all email clients and devices. You can preview your signature in both light and dark mode before copying it.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <details>
+      <summary>Is this email signature generator really free?</summary>
+      <p>Yes, completely free. No trial period, no feature gates, no hidden costs, no per-user fees. The full tool is available at no charge under the MIT open-source license.</p>
+    </details>
+    <details>
+      <summary>Do I need to create an account or sign up?</summary>
+      <p>No. There is no sign-up, no login, and no account creation required. Just open the page and start building your signature immediately.</p>
+    </details>
+    <details>
+      <summary>Is my data safe? Do you track anything?</summary>
+      <p>Everything runs entirely in your browser. No data is sent to any server. There are no cookies, no analytics, and no tracking scripts. Your information never leaves your device.</p>
+    </details>
+    <details>
+      <summary>Does it work with Outlook, Gmail and Apple Mail?</summary>
+      <p>Yes. The generated signatures work with Microsoft Outlook (new, classic, and Mac versions), Gmail, and Apple Mail. Step-by-step setup instructions are included for each email client.</p>
+    </details>
+    <details>
+      <summary>Can I add my company logo to the signature?</summary>
+      <p>Yes. You can paste a logo URL or upload an image file from your computer. For best results with dark mode email clients, use a JPEG with a solid background rather than a transparent PNG.</p>
+    </details>
+    <details>
+      <summary>What makes this different from paid email signature generators?</summary>
+      <p>Unlike paid alternatives, this tool requires no account, has no monthly fees, adds no branding or backlinks to your signature, collects no data, and is fully open source. You get every feature with zero strings attached.</p>
+    </details>
+    <details>
+      <summary>Can I use this for my whole team?</summary>
+      <p>Yes. There are no per-user limits. Each team member can generate their own signature independently. You can also self-host the tool on your own server for your organisation.</p>
+    </details>
+    <details>
+      <summary>Can I self-host this tool?</summary>
+      <p>Yes. It is a single HTML file with no dependencies. Download it from GitHub and serve it from any web server, or just open it locally in a browser. No build step or server-side language required.</p>
+    </details>
   </div>
 
   <!-- ============= FOOTER ============= -->

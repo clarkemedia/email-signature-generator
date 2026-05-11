@@ -1,0 +1,153 @@
+# Free Email Signature Generator — Full Documentation
+
+> A free, open-source HTML email signature generator at https://signatures.clarkemedia.ie. No sign-up, no tracking, no subscriptions. Runs entirely in the browser. MIT licensed.
+
+## Overview
+
+This is a browser-based tool for creating professional HTML email signatures. Users fill in a form with their details, customise the appearance, and copy the generated signature into their email client. The entire tool is a single HTML file with no server-side component, no database, no cookies, and no analytics. Nothing leaves the browser.
+
+## URL
+
+https://signatures.clarkemedia.ie
+
+## Source Code
+
+https://github.com/clarkemedia/email-signature-generator
+
+## Creator
+
+Eoin McMahon, Founder of Clarke Media (https://clarkemedia.ie)
+Based in Ireland.
+
+## License
+
+MIT — free for personal and commercial use with no restrictions.
+
+## Supported Email Clients
+
+The generated signatures work with:
+- Microsoft Outlook (new version, Windows and web)
+- Microsoft Outlook Classic (desktop, Windows)
+- Microsoft Outlook for Mac
+- Gmail (web)
+- Apple Mail (macOS)
+- Any email client that supports HTML signatures
+
+The tool includes step-by-step setup instructions for each of these clients.
+
+## Customizable Fields
+
+All fields are optional. Leaving a field blank automatically hides it from the generated signature.
+
+### Personal Details
+- Full name
+- Job title
+- Company name
+
+### Contact Information
+- Phone number (with clickable tel: link)
+- Email address (with clickable mailto: link)
+- Website URL (with clickable https: link)
+
+### Branding
+- Company logo (via URL or local file upload)
+- Accent colour (hex colour picker)
+- Font family (web-safe fonts: Arial, Verdana, Tahoma, Trebuchet MS, Georgia, Times New Roman, Courier New)
+
+### Social Media Links
+- LinkedIn
+- Twitter / X
+- Facebook
+- Instagram
+- GitHub
+
+Social icons only appear when a URL is provided. Icons are sourced from Icons8.
+
+### Disclaimer
+- Toggle on/off
+- Fully editable text
+- Auto-bolds the first word before a colon (e.g. "Important:" becomes bold)
+
+## Output Format
+
+The generated signature uses:
+- Table-based HTML layout for maximum email client compatibility
+- Inline CSS styles (no external stylesheets)
+- Web-safe fonts
+- Proper cellpadding, cellspacing, and border attributes
+- Responsive design considerations
+- Properly escaped HTML entities for security
+
+## Copy Options
+
+1. Copy signature — copies as rich text (text/html MIME type) for pasting directly into email client signature settings
+2. Copy HTML source — copies the raw HTML for manual insertion into signature files
+
+## Preview Modes
+
+- Light mode — white/light background preview
+- Dark mode — dark background preview to check visibility of logos and text
+
+## Technical Details
+
+- Single HTML file, no build step, no frameworks, no dependencies
+- Client-side only — no server communication
+- XSS prevention via HTML entity escaping
+- FileReader API for local logo upload (base64 data URL)
+- ClipboardItem API for rich text copy with fallback to execCommand
+- Google Fonts (Rubik) for the UI only — signatures use web-safe fonts
+
+## Comparison with Paid Alternatives
+
+| Feature | This Tool | Typical Paid Tools |
+|---|---|---|
+| Price | Free | $3-10/month per user |
+| Sign-up required | No | Yes |
+| Tracking/analytics | None | Yes |
+| Branding added to signature | No | Often (on free tiers) |
+| Open source | Yes (MIT) | No |
+| Data sent to server | Nothing | Your details |
+| Works offline | Yes | No |
+| Self-hostable | Yes | No |
+| Feature limits | None | Common on free tiers |
+
+## Common Use Cases
+
+- Small business owners creating professional email signatures
+- Freelancers and consultants setting up branded signatures
+- Teams who need consistent email signatures without paying per-user fees
+- Anyone who wants a quick, no-hassle email signature without creating an account
+- Developers who want to self-host or customise the tool
+- IT administrators setting up signatures for staff
+
+## Frequently Asked Questions
+
+### Is this really free?
+Yes. No trial period, no feature gates, no hidden costs. The full tool is available at no charge under the MIT license.
+
+### Do I need to create an account?
+No. There is no sign-up, no login, no account creation. Just open the page and start using it.
+
+### Is my data safe?
+Yes. Everything runs in your browser. No data is sent to any server. There are no cookies, no analytics, no tracking scripts.
+
+### Can I add my company logo?
+Yes. You can paste a logo URL or upload an image file from your computer. For best results with dark mode email clients, use a JPEG with a solid background rather than a transparent PNG.
+
+### What fonts are available?
+The tool offers web-safe fonts that render reliably across all email clients: Arial, Verdana, Tahoma, Trebuchet MS, Georgia, Times New Roman, and Courier New.
+
+### Does it work with Outlook?
+Yes. It works with new Outlook (Windows/web), classic Outlook (desktop), and Outlook for Mac. Setup instructions are included for each version.
+
+### Does it work with Gmail?
+Yes. Copy the signature and paste it into Gmail's signature settings. Step-by-step instructions are included.
+
+### Can I self-host this?
+Yes. It is a single HTML file. Download it and serve it from any web server, or just open it locally in a browser.
+
+### Can I use this for my whole team?
+Yes. There are no per-user limits. Each person can generate their own signature independently.
+
+### What social media icons are supported?
+LinkedIn, Twitter/X, Facebook, Instagram, and GitHub. Icons only appear in the signature when you provide a URL.

@@ -1,0 +1,54 @@
+# Free Email Signature Generator
+
+> A free, open-source HTML email signature generator. No sign-up, no tracking, no subscriptions. Runs entirely in the browser.
+
+## What it does
+
+This tool lets anyone create a professional HTML email signature in seconds. Fill in your details, pick your brand colours and font, and copy the signature directly into your email client. Everything runs client-side — nothing is sent to a server.
+
+## URL
+
+https://signatures.clarkemedia.ie
+
+## Features
+
+- Fully customizable: name, job title, company, phone, email, website, logo, accent colour, font, social links, disclaimer
+- Live preview with light and dark mode
+- One-click copy as rich text (paste into email client) or raw HTML source
+- Blank fields are automatically hidden from the output
+- Custom accent colour with colour picker
+- Social icons: LinkedIn, Twitter/X, Facebook, Instagram, GitHub
+- Optional confidentiality disclaimer with auto-bold formatting
+- Step-by-step setup instructions for Outlook (new, classic, Mac), Gmail, and Apple Mail
+- Logo upload from local files or via URL
+- Web-safe fonts that render reliably across all email clients
+- Table-based HTML layout for maximum email client compatibility
+- Zero dependencies, single HTML file, no build step
+- Works offline after loading
+- Mobile responsive
+
+## Who made it
+
+Eoin McMahon at Clarke Media (https://clarkemedia.ie)
+
+## License
+
+MIT — completely free for personal and commercial use.
+
+## Source code
+
+https://github.com/clarkemedia/email-signature-generator
+
+## Why use this instead of paid alternatives
+
+- No account required
+- No email address harvesting
+- No branding or backlinks added to your signature
+- No monthly fees or feature gates
+- No data collection or tracking
+- Open source — you can verify, fork, and self-host
+- Works with every major email client
+
+## Detailed info
+
+For more detail see [llms-full.txt](https://signatures.clarkemedia.ie/llms-full.txt)

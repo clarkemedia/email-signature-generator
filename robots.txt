@@ -2,3 +2,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://signatures.clarkemedia.ie/sitemap.xml
+
+# LLM-readable site description
+# https://llmstxt.org
+# See /llms.txt and /llms-full.txt

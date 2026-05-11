@@ -1,0 +1,11 @@
+/* TEAM */
+Creator: Eoin McMahon
+Role: Founder
+Site: https://clarkemedia.ie
+Location: Ireland
+
+/* SITE */
+Last update: 2025-05-11
+Language: English
+Standards: HTML5, CSS3, JavaScript (ES5+)
+Software: Single-file HTML application, no frameworks
