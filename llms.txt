@@ -12,12 +12,14 @@ https://signatures.clarkemedia.ie
 
 ## Features
 
-- Fully customizable: name, job title, company, phone, email, website, logo, accent colour, font, social links, disclaimer
+- Fully customizable: name, job title, company, phone, email, website, address, logo, logo size, accent colour, font, text size, social links, call-to-action buttons, disclaimer
 - Live preview with light and dark mode
 - One-click copy as rich text (paste into email client) or raw HTML source
 - Blank fields are automatically hidden from the output
 - Custom accent colour with colour picker
-- Social icons: LinkedIn, Twitter/X, Facebook, Instagram, GitHub
+- Social icons: LinkedIn, Twitter/X, Facebook, Instagram, GitHub, YouTube, TikTok, Pinterest, WhatsApp, plus two custom icons for any other network
+- Up to three clickable call-to-action buttons, side by side, with custom text, link and colour
+- Adjustable logo width and four text sizes
 - Optional confidentiality disclaimer with auto-bold formatting
 - Step-by-step setup instructions for Outlook (new, classic, Mac), Gmail, and Apple Mail
 - Logo upload from local files or via URL

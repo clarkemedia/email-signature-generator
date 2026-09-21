@@ -48,11 +48,14 @@ All fields are optional. Leaving a field blank automatically hides it from the g
 - Phone number (with clickable tel: link)
 - Email address (with clickable mailto: link)
 - Website URL (with clickable https: link)
+- Postal address: street, city, postcode / zip, country (shown on one line)
 
 ### Branding
 - Company logo (via URL or local file upload)
+- Logo width slider (50 to 220px, default 120px)
 - Accent colour (hex colour picker)
-- Font family (web-safe fonts: Arial, Verdana, Tahoma, Trebuchet MS, Georgia, Times New Roman, Courier New)
+- Font family (web-safe fonts: Arial, Helvetica, Calibri, Segoe UI, Verdana, Tahoma, Trebuchet MS, Lucida Sans, Georgia, Palatino, Garamond, Times New Roman, Courier New)
+- Text size: Small, Medium, Large, Extra Large
 
 ### Social Media Links
 - LinkedIn
@@ -60,8 +63,19 @@ All fields are optional. Leaving a field blank automatically hides it from the g
 - Facebook
 - Instagram
 - GitHub
+- YouTube
+- TikTok
+- Pinterest
+- WhatsApp
+- Two custom icons: any link plus your own icon image URL
 
-Social icons only appear when a URL is provided. Icons are sourced from Icons8.
+Social icons only appear when a URL is provided. Built-in icons are sourced from Icons8.
+
+### Call-to-Action Buttons
+- Add up to three clickable buttons, shown side by side
+- Each button has its own text, link and colour
+- Option to use one colour for all buttons (on by default)
+- Built with table cells so the full coloured box renders in Classic Outlook
 
 ### Disclaimer
 - Toggle on/off
@@ -135,7 +149,7 @@ Yes. Everything runs in your browser. No data is sent to any server. There are n
 Yes. You can paste a logo URL or upload an image file from your computer. For best results with dark mode email clients, use a JPEG with a solid background rather than a transparent PNG.
 
 ### What fonts are available?
-The tool offers web-safe fonts that render reliably across all email clients: Arial, Verdana, Tahoma, Trebuchet MS, Georgia, Times New Roman, and Courier New.
+The tool offers 13 web-safe fonts that render reliably across all email clients: Arial, Helvetica, Calibri, Segoe UI, Verdana, Tahoma, Trebuchet MS, Lucida Sans, Georgia, Palatino, Garamond, Times New Roman, and Courier New. Text size can be set to Small, Medium, Large or Extra Large.
 
 ### Does it work with Outlook?
 Yes. It works with new Outlook (Windows/web), classic Outlook (desktop), and Outlook for Mac. Setup instructions are included for each version.
@@ -150,4 +164,4 @@ Yes. It is a single HTML file. Download it and serve it from any web server, or 
 Yes. There are no per-user limits. Each person can generate their own signature independently.
 
 ### What social media icons are supported?
-LinkedIn, Twitter/X, Facebook, Instagram, and GitHub. Icons only appear in the signature when you provide a URL.
+LinkedIn, Twitter/X, Facebook, Instagram, GitHub, YouTube, TikTok, Pinterest and WhatsApp. You can also add two custom icons for any other network by providing a link and your own icon image. Icons only appear in the signature when you provide a URL.
