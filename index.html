@@ -158,6 +158,64 @@
     }
     .color-row input[type="text"] { flex: 1; }
 
+    /* Logo width slider */
+    .field input.range {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      appearance: auto;
+      -webkit-appearance: auto;
+      accent-color: #17599A;
+      cursor: pointer;
+    }
+
+    /* Add button */
+    .add-btn {
+      font-family: 'Rubik', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 18px;
+      background: #fff;
+      color: #17599A;
+      border: 1px dashed #17599A;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .add-btn:hover { background: #f0f7fb; }
+
+    /* CTA button rows */
+    .button-rows { display: grid; gap: 10px; }
+    .button-rows:not(:empty) { margin-bottom: 12px; }
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 48px 38px;
+      gap: 10px;
+      align-items: center;
+    }
+    .button-row input { height: 38px; }
+    .button-row input[type="color"] {
+      padding: 2px;
+      cursor: pointer;
+    }
+    .b-remove {
+      width: 38px;
+      height: 38px;
+      font-size: 20px;
+      line-height: 1;
+      color: #999;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .b-remove:hover { color: #c0392b; border-color: #c0392b; background: #fdf3f2; }
+    @media (max-width: 560px) {
+      .button-row { grid-template-columns: 1fr 48px 38px; }
+      .button-row .field:first-child { grid-column: 1 / -1; }
+    }
+
     /* Checkbox */
     .checkbox-field {
       display: flex;
@@ -171,6 +229,37 @@
       accent-color: #17599A;
     }
     .checkbox-field label { margin-bottom: 0; cursor: pointer; }
+
+    /* Collapsible form sections */
+    .form-section { border-bottom: 1px solid #eee; }
+    .form-section:first-child { margin-top: -10px; }
+    .form-section[open] { padding-bottom: 18px; }
+    .form-section > summary.section-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+      padding: 14px 0;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .form-section > summary::-webkit-details-marker { display: none; }
+    .form-section > summary::after {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-right: 2px solid #17599A;
+      border-bottom: 2px solid #17599A;
+      transform: rotate(45deg);
+      transition: transform 0.15s;
+      margin-right: 4px;
+    }
+    .form-section[open] > summary::after { transform: rotate(-135deg); }
+    .form-section > summary:hover { color: #114678; }
+    .form-section > summary:focus-visible { outline: 2px solid #17599A; outline-offset: 2px; }
+    .form-section + .section-divider { display: none; }
+    .form-section + .section-divider + .section-label { margin-top: 18px; }
 
     /* Divider */
     .section-divider {
@@ -361,7 +450,8 @@
     <!-- ============= FORM PANEL ============= -->
     <div class="panel">
 
-      <p class="section-label">Your Details</p>
+      <details class="form-section" open>
+      <summary class="section-label">Your Details</summary>
       <div class="form-grid">
         <div class="field">
           <label for="sig-name">Full Name</label>
@@ -377,8 +467,10 @@
         </div>
       </div>
 
-      <hr class="section-divider">
-      <p class="section-label">Contact</p>
+      </details>
+
+      <details class="form-section">
+      <summary class="section-label">Contact</summary>
       <div class="form-grid">
         <div class="field">
           <label for="sig-phone">Phone</label>
@@ -394,10 +486,29 @@
           <label for="sig-website">Website</label>
           <input id="sig-website" type="text" value="www.clarkemedia.ie" autocomplete="off" placeholder="example.com">
         </div>
+        <div class="field field-full">
+          <label for="sig-address">Street Address</label>
+          <input id="sig-address" type="text" value="" autocomplete="off" placeholder="e.g. 1 Main Street">
+        </div>
+        <div class="field">
+          <label for="sig-city">City</label>
+          <input id="sig-city" type="text" value="" autocomplete="off" placeholder="e.g. Dublin">
+        </div>
+        <div class="field">
+          <label for="sig-postcode">Postcode / Zip</label>
+          <input id="sig-postcode" type="text" value="" autocomplete="off" placeholder="e.g. D02 X285">
+        </div>
+        <div class="field">
+          <label for="sig-country">Country</label>
+          <input id="sig-country" type="text" value="" autocomplete="off" placeholder="e.g. Ireland">
+        </div>
       </div>
+      <div class="field-hint" style="margin-top: 8px;">Address fields are optional and are shown on one line.</div>
 
-      <hr class="section-divider">
-      <p class="section-label">Branding</p>
+      </details>
+
+      <details class="form-section">
+      <summary class="section-label">Branding</summary>
       <div class="form-grid">
         <div class="field field-full">
           <label for="sig-logo">Logo URL</label>
@@ -408,18 +519,38 @@
           </div>
           <div class="field-hint">Paste a URL or upload from your computer. Use JPEG format with a white or solid background for best dark mode compatibility — transparent PNGs and WebPs can disappear against dark backgrounds. Uploaded images work in the preview; for the final signature, host the image at a public URL.</div>
         </div>
+        <div class="field field-full">
+          <label for="sig-logo-width">Logo Width: <span id="sig-logo-width-value">120</span>px</label>
+          <input id="sig-logo-width" type="range" min="50" max="220" step="5" value="120" class="range">
+          <div class="field-hint">Smaller logos keep the signature compact, especially on mobile.</div>
+        </div>
         <div class="field">
           <label for="sig-font">Font</label>
           <select id="sig-font">
             <option value="Arial, Helvetica, sans-serif">Arial</option>
+            <option value="Helvetica, Arial, sans-serif">Helvetica</option>
+            <option value="Calibri, Carlito, Arial, sans-serif">Calibri</option>
+            <option value="'Segoe UI', Tahoma, Arial, sans-serif">Segoe UI</option>
             <option value="Verdana, Geneva, sans-serif">Verdana</option>
             <option value="Tahoma, Geneva, sans-serif">Tahoma</option>
             <option value="'Trebuchet MS', Helvetica, sans-serif">Trebuchet MS</option>
+            <option value="'Lucida Sans Unicode', 'Lucida Grande', sans-serif">Lucida Sans</option>
             <option value="Georgia, 'Times New Roman', serif">Georgia</option>
+            <option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif">Palatino</option>
+            <option value="Garamond, Georgia, serif">Garamond</option>
             <option value="'Times New Roman', Times, serif">Times New Roman</option>
             <option value="'Courier New', Courier, monospace">Courier New</option>
           </select>
           <div class="field-hint">Web-safe fonts that render reliably across all email clients.</div>
+        </div>
+        <div class="field">
+          <label for="sig-size">Text Size</label>
+          <select id="sig-size">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+            <option value="xlarge">Extra Large</option>
+          </select>
         </div>
         <div class="field">
           <label>Accent Colour</label>
@@ -430,8 +561,10 @@
         </div>
       </div>
 
-      <hr class="section-divider">
-      <p class="section-label">Social Links</p>
+      </details>
+
+      <details class="form-section">
+      <summary class="section-label">Social Links</summary>
       <div class="form-grid">
         <div class="field">
           <label for="sig-linkedin">LinkedIn</label>
@@ -453,8 +586,58 @@
           <label for="sig-github">GitHub</label>
           <input id="sig-github" type="url" value="https://github.com/clarkemedia" autocomplete="off" placeholder="https://github.com/...">
         </div>
+        <div class="field">
+          <label for="sig-youtube">YouTube</label>
+          <input id="sig-youtube" type="url" value="" autocomplete="off" placeholder="https://youtube.com/@...">
+        </div>
+        <div class="field">
+          <label for="sig-tiktok">TikTok</label>
+          <input id="sig-tiktok" type="url" value="" autocomplete="off" placeholder="https://tiktok.com/@...">
+        </div>
+        <div class="field">
+          <label for="sig-pinterest">Pinterest</label>
+          <input id="sig-pinterest" type="url" value="" autocomplete="off" placeholder="https://pinterest.com/...">
+        </div>
+        <div class="field">
+          <label for="sig-whatsapp">WhatsApp</label>
+          <input id="sig-whatsapp" type="url" value="" autocomplete="off" placeholder="https://wa.me/353...">
+        </div>
       </div>
       <div class="field-hint" style="margin-top: 8px;">Social icons only appear when a URL is provided.</div>
+
+      <p class="section-label" style="margin-top: 18px;">Custom Icons</p>
+      <div class="form-grid">
+        <div class="field">
+          <label for="sig-custom1-url">Custom Link 1</label>
+          <input id="sig-custom1-url" type="url" value="" autocomplete="off" placeholder="https://...">
+        </div>
+        <div class="field">
+          <label for="sig-custom1-icon">Icon Image URL</label>
+          <input id="sig-custom1-icon" type="url" value="" autocomplete="off" placeholder="https://example.com/icon.png">
+        </div>
+        <div class="field">
+          <label for="sig-custom2-url">Custom Link 2</label>
+          <input id="sig-custom2-url" type="url" value="" autocomplete="off" placeholder="https://...">
+        </div>
+        <div class="field">
+          <label for="sig-custom2-icon">Icon Image URL</label>
+          <input id="sig-custom2-icon" type="url" value="" autocomplete="off" placeholder="https://example.com/icon.png">
+        </div>
+      </div>
+      <div class="field-hint" style="margin-top: 8px;">For any network not listed above. Use a square PNG or JPEG hosted at a public URL; it is shown at 26&times;26px.</div>
+
+      </details>
+
+      <details class="form-section">
+      <summary class="section-label">Buttons</summary>
+      <div class="field-hint" style="margin: 0 0 12px 0;">Optional clickable call-to-action buttons, e.g. "Book a Call" or "Get a Quote". They sit side by side under your details.</div>
+      <div id="button-list" class="button-rows"></div>
+      <button type="button" class="add-btn" id="add-button-btn">+ Add button</button>
+      <div class="checkbox-field" id="same-color-field" style="margin: 14px 0 0 0;">
+        <input type="checkbox" id="sig-btn-same-color" checked>
+        <label for="sig-btn-same-color">Use the same colour for all buttons</label>
+      </div>
+      </details>
 
       <hr class="section-divider">
       <p class="section-label">Disclaimer</p>
@@ -605,18 +788,31 @@
       }
 
       // ============= FORM ELEMENTS =============
-      var ids = [
+      var textInputs = [
         'sig-name', 'sig-title', 'sig-company',
         'sig-phone', 'sig-email', 'sig-website',
-        'sig-logo', 'sig-font', 'sig-color', 'sig-color-hex',
+        'sig-address', 'sig-city', 'sig-postcode', 'sig-country',
+        'sig-logo', 'sig-logo-width',
         'sig-linkedin', 'sig-twitter', 'sig-facebook', 'sig-instagram', 'sig-github',
-        'sig-disclaimer-toggle', 'sig-disclaimer'
+        'sig-youtube', 'sig-tiktok', 'sig-pinterest', 'sig-whatsapp',
+        'sig-custom1-url', 'sig-custom1-icon', 'sig-custom2-url', 'sig-custom2-icon',
+        'sig-disclaimer'
       ];
+      var ids = textInputs.concat([
+        'sig-font', 'sig-size', 'sig-color', 'sig-color-hex',
+        'sig-btn-same-color',
+        'sig-disclaimer-toggle'
+      ]);
       var el = {};
       ids.forEach(function (id) { el[id] = document.getElementById(id); });
 
       var preview = document.getElementById('sig-preview');
       var disclaimerField = document.getElementById('disclaimer-field');
+      var buttonList = document.getElementById('button-list');
+      var addButtonBtn = document.getElementById('add-button-btn');
+      var sameColorField = document.getElementById('same-color-field');
+      var MAX_BUTTONS = 3;
+      var DEFAULT_BUTTON_COLOR = '#17599A';
 
       // Store default values for reset
       var defaults = {};
@@ -635,35 +831,73 @@
         twitter:   'https://img.icons8.com/color/48/twitterx--v2.png',
         facebook:  'https://img.icons8.com/color/48/facebook-new.png',
         instagram: 'https://img.icons8.com/fluency/48/instagram-new.png',
-        github:    'https://img.icons8.com/fluency/48/github.png'
+        github:    'https://img.icons8.com/fluency/48/github.png',
+        youtube:   'https://img.icons8.com/color/48/youtube-play.png',
+        tiktok:    'https://img.icons8.com/color/48/tiktok--v1.png',
+        pinterest: 'https://img.icons8.com/color/48/pinterest--v1.png',
+        whatsapp:  'https://img.icons8.com/color/48/whatsapp--v1.png'
+      };
+      var SOCIAL_ORDER = [
+        ['linkedin', 'LinkedIn'], ['twitter', 'Twitter'], ['facebook', 'Facebook'],
+        ['instagram', 'Instagram'], ['github', 'GitHub'], ['youtube', 'YouTube'],
+        ['tiktok', 'TikTok'], ['pinterest', 'Pinterest'], ['whatsapp', 'WhatsApp']
+      ];
+
+      // Font sizes in px for each Text Size option
+      var SIZES = {
+        small:  { name: 14, text: 11, disclaimer: 9,  button: 12 },
+        medium: { name: 16, text: 12, disclaimer: 10, button: 13 },
+        large:  { name: 18, text: 14, disclaimer: 11, button: 14 },
+        xlarge: { name: 20, text: 15, disclaimer: 12, button: 15 }
       };
 
       // ============= RENDER =============
+      function val(id) { return el[id].value.trim(); }
+
       function getValues() {
-        return {
-          name:      el['sig-name'].value.trim(),
-          title:     el['sig-title'].value.trim(),
-          company:   el['sig-company'].value.trim(),
-          phone:     el['sig-phone'].value.trim(),
-          email:     el['sig-email'].value.trim(),
-          website:   el['sig-website'].value.trim(),
-          logo:      el['sig-logo'].value.trim(),
+        var v = {
+          name:      val('sig-name'),
+          title:     val('sig-title'),
+          company:   val('sig-company'),
+          phone:     val('sig-phone'),
+          email:     val('sig-email'),
+          website:   val('sig-website'),
+          address:   [val('sig-address'), val('sig-city'), val('sig-postcode'), val('sig-country')]
+                       .filter(Boolean).join(', '),
+          logo:      val('sig-logo'),
+          logoWidth: parseInt(el['sig-logo-width'].value, 10) || 120,
           font:      el['sig-font'].value,
+          size:      SIZES[el['sig-size'].value] || SIZES.medium,
           color:     el['sig-color'].value,
-          linkedin:  el['sig-linkedin'].value.trim(),
-          twitter:   el['sig-twitter'].value.trim(),
-          facebook:  el['sig-facebook'].value.trim(),
-          instagram: el['sig-instagram'].value.trim(),
-          github:    el['sig-github'].value.trim(),
+          socials:   [],
+          buttons:   [],
           showDisclaimer: el['sig-disclaimer-toggle'].checked,
-          disclaimer: el['sig-disclaimer'].value.trim()
+          disclaimer: val('sig-disclaimer')
         };
+        SOCIAL_ORDER.forEach(function (s) {
+          var url = val('sig-' + s[0]);
+          if (url) v.socials.push({ url: url, icon: ICONS[s[0]], alt: s[1] });
+        });
+        [1, 2].forEach(function (n) {
+          var url = val('sig-custom' + n + '-url');
+          var icon = val('sig-custom' + n + '-icon');
+          if (url && icon) v.socials.push({ url: url, icon: icon, alt: stripProto(addProto(url)).split('/')[0] });
+        });
+        buttonList.querySelectorAll('.button-row').forEach(function (row) {
+          var text = row.querySelector('.b-text').value.trim();
+          var url = row.querySelector('.b-url').value.trim();
+          if (text && url) v.buttons.push({ text: text, url: url, color: row.querySelector('.b-color').value });
+        });
+        return v;
       }
 
       function render() {
         var v = getValues();
         var f = v.font;
         var c = v.color;
+        var sz = v.size;
+        var lw = v.logoWidth;
+        document.getElementById('sig-logo-width-value').textContent = lw;
 
         var hasLogo    = !!v.logo;
         var hasName    = !!v.name;
@@ -672,22 +906,22 @@
         var hasPhone   = !!v.phone;
         var hasEmail   = !!v.email;
         var hasWebsite = !!v.website;
+        var hasAddress = !!v.address;
         var hasIdentity = hasName || hasTitle || hasCompany;
-        var hasContact  = hasPhone || hasEmail || hasWebsite;
+        var hasContact  = hasPhone || hasEmail || hasWebsite || hasAddress;
 
-        var socials = [];
-        if (v.linkedin)  socials.push({ url: v.linkedin,  icon: ICONS.linkedin,  alt: 'LinkedIn' });
-        if (v.twitter)   socials.push({ url: v.twitter,   icon: ICONS.twitter,   alt: 'Twitter' });
-        if (v.facebook)  socials.push({ url: v.facebook,  icon: ICONS.facebook,  alt: 'Facebook' });
-        if (v.instagram) socials.push({ url: v.instagram, icon: ICONS.instagram, alt: 'Instagram' });
-        if (v.github)    socials.push({ url: v.github,    icon: ICONS.github,    alt: 'GitHub' });
+        var socials = v.socials;
         var hasSocials = socials.length > 0;
+        var hasButtons = v.buttons.length > 0;
 
         var hasDisclaimer = v.showDisclaimer && v.disclaimer;
         var hasFooter = hasSocials || hasDisclaimer;
 
-        // Toggle disclaimer textarea visibility
+        // Toggle disclaimer textarea and button fields visibility
         disclaimerField.style.display = v.showDisclaimer ? '' : 'none';
+        var buttonCount = buttonList.children.length;
+        addButtonBtn.style.display = buttonCount < MAX_BUTTONS ? '' : 'none';
+        sameColorField.style.display = buttonCount > 1 ? '' : 'none';
 
         if (!hasIdentity && !hasContact && !hasLogo) {
           preview.innerHTML = '<p class="preview-placeholder">Fill in the form above to generate your signature.</p>';
@@ -704,17 +938,17 @@
         h += '<tr>';
 
         if (hasLogo) {
-          h += '<td valign="middle" width="170" style="padding: 0 16px 0 0;">';
-          h += '<img src="' + escAttr(v.logo) + '" alt="' + escAttr(v.company || v.name || 'Logo') + '" width="170" style="display: block; width: 170px; max-width: 170px; border: 0;" />';
+          h += '<td valign="middle" width="' + lw + '" style="width: ' + lw + 'px; padding: 0 16px 0 0;">';
+          h += '<img src="' + escAttr(v.logo) + '" alt="' + escAttr(v.company || v.name || 'Logo') + '" width="' + lw + '" style="display: block; width: ' + lw + 'px; max-width: ' + lw + 'px; height: auto; border: 0;" />';
           h += '</td>';
           h += '<td width="1" style="width: 1px; background-color: ' + c + '; padding: 0; font-size: 0; line-height: 0;">&nbsp;</td>';
         }
 
         if (hasIdentity) {
           h += '<td valign="middle" style="padding-left: ' + (hasLogo ? '16' : '0') + 'px;' + (hasContact ? ' padding-right: 20px;' : '') + '">';
-          if (hasName)    h += '<p style="margin: 0 0 3px 0; font-size: 16px; font-weight: bold; color: ' + c + '; font-family: ' + f + '; white-space: nowrap;">' + esc(v.name) + '</p>';
-          if (hasTitle)   h += '<p style="margin: 0 0 2px 0; font-size: 12px; color: #555555; font-family: ' + f + '; white-space: nowrap;">' + esc(v.title) + '</p>';
-          if (hasCompany) h += '<p style="margin: 0; font-size: 12px; color: #666666; font-family: ' + f + '; white-space: nowrap;">' + esc(v.company) + '</p>';
+          if (hasName)    h += '<p style="margin: 0 0 3px 0; font-size: ' + sz.name + 'px; font-weight: bold; color: ' + c + '; font-family: ' + f + '; white-space: nowrap;">' + esc(v.name) + '</p>';
+          if (hasTitle)   h += '<p style="margin: 0 0 2px 0; font-size: ' + sz.text + 'px; color: #555555; font-family: ' + f + '; white-space: nowrap;">' + esc(v.title) + '</p>';
+          if (hasCompany) h += '<p style="margin: 0; font-size: ' + sz.text + 'px; color: #666666; font-family: ' + f + '; white-space: nowrap;">' + esc(v.company) + '</p>';
           h += '</td>';
         }
 
@@ -726,11 +960,20 @@
           if (hasPhone) contactRows.push('phone');
           if (hasEmail) contactRows.push('email');
           if (hasWebsite) contactRows.push('website');
+          if (hasAddress) contactRows.push('address');
 
           contactRows.forEach(function (type, i) {
             var isLast = i === contactRows.length - 1;
             var pb = isLast ? '0' : '4';
             var label, href, text;
+
+            if (type === 'address') {
+              h += '<tr>';
+              h += '<td valign="top" style="font-family: ' + f + '; font-size: ' + sz.text + 'px; font-weight: bold; color: ' + c + '; padding: 0 8px ' + pb + 'px 0; line-height: 1.5;">A</td>';
+              h += '<td valign="top" style="font-family: ' + f + '; font-size: ' + sz.text + 'px; color: #555555; padding: 0 0 ' + pb + 'px 0; line-height: 1.5;">' + esc(v.address) + '</td>';
+              h += '</tr>';
+              return;
+            }
 
             if (type === 'phone') {
               label = 'T';
@@ -747,8 +990,8 @@
             }
 
             h += '<tr>';
-            h += '<td valign="middle" style="font-family: ' + f + '; font-size: 12px; font-weight: bold; color: ' + c + '; padding: 0 8px ' + pb + 'px 0; line-height: 1.5;">' + label + '</td>';
-            h += '<td valign="middle" style="font-family: ' + f + '; font-size: 12px; color: #555555; padding: 0 0 ' + pb + 'px 0; line-height: 1.5; white-space: nowrap;">';
+            h += '<td valign="middle" style="font-family: ' + f + '; font-size: ' + sz.text + 'px; font-weight: bold; color: ' + c + '; padding: 0 8px ' + pb + 'px 0; line-height: 1.5;">' + label + '</td>';
+            h += '<td valign="middle" style="font-family: ' + f + '; font-size: ' + sz.text + 'px; color: #555555; padding: 0 0 ' + pb + 'px 0; line-height: 1.5; white-space: nowrap;">';
             h += '<a href="' + href + '" style="color: #555555; text-decoration: none;">' + esc(text) + '</a>';
             h += '</td>';
             h += '</tr>';
@@ -759,6 +1002,22 @@
         }
 
         h += '</tr>';
+
+        // ---- CTA BUTTONS ----
+        // Padding and background sit on the <td> so Classic Outlook renders the full box
+        if (hasButtons) {
+          h += '<tr><td colspan="' + cols + '" style="padding-top: 14px;">';
+          h += '<table cellpadding="0" cellspacing="0" border="0"><tr>';
+          v.buttons.forEach(function (b, i) {
+            // Spacer cell between buttons (Outlook ignores margin on table cells)
+            if (i > 0) h += '<td width="8" style="width: 8px; font-size: 0; line-height: 0;">&nbsp;</td>';
+            h += '<td bgcolor="' + b.color + '" style="background-color: ' + b.color + '; border-radius: 4px; padding: 8px 18px; white-space: nowrap;">';
+            h += '<a href="' + escAttr(addProto(b.url)) + '" target="_blank" style="font-family: ' + f + '; font-size: ' + sz.button + 'px; font-weight: bold; color: #ffffff; text-decoration: none; display: inline-block;">' + esc(b.text) + '</a>';
+            h += '</td>';
+          });
+          h += '</tr></table>';
+          h += '</td></tr>';
+        }
 
         // ---- FOOTER SECTION ----
         if (hasFooter) {
@@ -795,7 +1054,7 @@
             // Bold the first word before a colon if present (e.g. "Important:")
             dText = dText.replace(/^([^:&<]+:)/, '<strong style="color: #555555;">$1</strong>');
 
-            h += '<tr><td colspan="' + cols + '" style="font-family: ' + f + '; font-size: 10px; color: #666666; line-height: 1.5; padding-top: 10px;">';
+            h += '<tr><td colspan="' + cols + '" style="font-family: ' + f + '; font-size: ' + sz.disclaimer + 'px; color: #666666; line-height: 1.5; padding-top: 10px;">';
             h += dText;
             h += '</td></tr>';
           }
@@ -806,13 +1065,6 @@
       }
 
       // ============= EVENT LISTENERS =============
-      var textInputs = [
-        'sig-name', 'sig-title', 'sig-company',
-        'sig-phone', 'sig-email', 'sig-website',
-        'sig-logo',
-        'sig-linkedin', 'sig-twitter', 'sig-facebook', 'sig-instagram', 'sig-github',
-        'sig-disclaimer'
-      ];
       textInputs.forEach(function (id) {
         el[id].addEventListener('input', render);
       });
@@ -831,6 +1083,50 @@
       });
 
       el['sig-font'].addEventListener('change', render);
+      el['sig-size'].addEventListener('change', render);
+
+      // ============= CTA BUTTON LIST =============
+      function addButtonRow() {
+        if (buttonList.children.length >= MAX_BUTTONS) return;
+        var first = buttonList.querySelector('.b-color');
+        var color = first && el['sig-btn-same-color'].checked ? first.value : DEFAULT_BUTTON_COLOR;
+        var row = document.createElement('div');
+        row.className = 'button-row';
+        row.innerHTML =
+          '<div class="field"><input class="b-text" type="text" autocomplete="off" placeholder="Button text, e.g. Book a Call" aria-label="Button text"></div>' +
+          '<div class="field"><input class="b-url" type="url" autocomplete="off" placeholder="https://..." aria-label="Button link"></div>' +
+          '<div class="field"><input class="b-color" type="color" value="' + color + '" aria-label="Button colour" title="Button colour"></div>' +
+          '<button type="button" class="b-remove" aria-label="Remove button" title="Remove button">&times;</button>';
+        buttonList.appendChild(row);
+        render();
+        row.querySelector('.b-text').focus();
+      }
+
+      addButtonBtn.addEventListener('click', addButtonRow);
+
+      buttonList.addEventListener('input', function (e) {
+        // With "same colour" ticked, changing any button colour applies to all of them
+        if (e.target.classList.contains('b-color') && el['sig-btn-same-color'].checked) {
+          buttonList.querySelectorAll('.b-color').forEach(function (c) { c.value = e.target.value; });
+        }
+        render();
+      });
+
+      buttonList.addEventListener('click', function (e) {
+        var remove = e.target.closest('.b-remove');
+        if (!remove) return;
+        buttonList.removeChild(remove.closest('.button-row'));
+        render();
+        addButtonBtn.focus();
+      });
+
+      el['sig-btn-same-color'].addEventListener('change', function () {
+        if (!el['sig-btn-same-color'].checked) return;
+        var first = buttonList.querySelector('.b-color');
+        if (!first) return;
+        buttonList.querySelectorAll('.b-color').forEach(function (c) { c.value = first.value; });
+        render();
+      });
       el['sig-disclaimer-toggle'].addEventListener('change', render);
 
       document.getElementById('sig-logo-file').addEventListener('change', function (e) {
@@ -926,7 +1222,19 @@
             input.value = defaults[id];
           }
         });
+        buttonList.innerHTML = '';
         render();
+      });
+
+      // ============= FORM SECTIONS (one open at a time) =============
+      var formSections = document.querySelectorAll('details.form-section');
+      formSections.forEach(function (section) {
+        section.addEventListener('toggle', function () {
+          if (!section.open) return;
+          formSections.forEach(function (other) {
+            if (other !== section) other.open = false;
+          });
+        });
       });
 
       // ============= INSTRUCTION TABS =============
