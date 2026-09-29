@@ -410,6 +410,7 @@
     }
     .btn-outline:hover { background: #f5f5f5; color: #555; }
     .btn:active { transform: translateY(1px); }
+    label.btn { display: inline-block; line-height: normal; }
     .btn.copied { background: #2d8c4f !important; color: #fff !important; border-color: #2d8c4f !important; }
 
     /* Preview stage */
@@ -826,8 +827,12 @@
       <div class="actions">
         <button class="btn btn-primary" id="copy-rich" type="button">Copy signature</button>
         <button class="btn btn-secondary" id="copy-html" type="button">Copy HTML source</button>
+        <button class="btn btn-outline" id="export-btn" type="button">Export settings</button>
+        <label class="btn btn-outline" for="import-file" id="import-btn">Import settings</label>
+        <input id="import-file" type="file" accept="application/json,.json" style="display: none;">
         <button class="btn btn-outline" id="reset-btn" type="button">Reset to defaults</button>
       </div>
+      <div class="field-hint" style="margin-top: 10px;">Export saves your details to a small file. Keep it as a backup, carry it to another computer, or save one file per signature if you use more than one. Import loads a file back in. <span id="import-status"></span></div>
       <div class="checkbox-field" style="margin-top: 16px;">
         <input type="checkbox" id="sig-remember" checked>
         <label for="sig-remember">Save my details in this browser</label>
@@ -1039,6 +1044,7 @@
       var REMEMBER_KEY = 'emailSignatureGenerator-remember';
       var rememberBox = document.getElementById('sig-remember');
       var saveStatus = document.getElementById('save-status');
+      var importStatus = document.getElementById('import-status');
 
       function storage() {
         try {
@@ -1056,10 +1062,8 @@
         if (s) { try { s.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ } }
       }
 
-      function saveState() {
-        var s = storage();
-        if (!s) return;
-        if (!rememberBox.checked) { forgetSaved(); return; }
+      // The shape used for both the browser copy and exported files
+      function collectState() {
         var data = { version: 1, fields: {}, buttons: [] };
         ids.forEach(function (id) {
           var input = el[id];
@@ -1072,6 +1076,43 @@
             color: row.querySelector('.b-color').value
           });
         });
+        return data;
+      }
+
+      // Values from a saved or imported file are only ever put into form inputs,
+      // and the preview escapes everything, so a stray file cannot inject markup
+      function applyState(data) {
+        if (!data || typeof data !== 'object' || !data.fields) return false;
+        ids.forEach(function (id) {
+          if (!(id in data.fields)) return;
+          var input = el[id];
+          var value = data.fields[id];
+          if (input.type === 'checkbox') {
+            input.checked = !!value;
+          } else if (typeof value === 'string' || typeof value === 'number') {
+            input.value = String(value);
+          }
+        });
+        buttonList.innerHTML = '';
+        var buttons = Array.isArray(data.buttons) ? data.buttons : [];
+        buttons.slice(0, MAX_BUTTONS).forEach(function (b) {
+          if (!b || typeof b !== 'object') return;
+          var row = addButtonRow(true);
+          if (!row) return;
+          row.querySelector('.b-text').value = typeof b.text === 'string' ? b.text : '';
+          row.querySelector('.b-url').value = typeof b.url === 'string' ? b.url : '';
+          if (typeof b.color === 'string' && /^#[0-9a-fA-F]{6}$/.test(b.color)) {
+            row.querySelector('.b-color').value = b.color;
+          }
+        });
+        return true;
+      }
+
+      function saveState() {
+        var s = storage();
+        if (!s) return;
+        if (!rememberBox.checked) { forgetSaved(); return; }
+        var data = collectState();
         try {
           s.setItem(STORAGE_KEY, JSON.stringify(data));
           saveStatus.textContent = '';
@@ -1092,24 +1133,57 @@
         if (!raw) return;
         var data;
         try { data = JSON.parse(raw); } catch (e) { forgetSaved(); return; }
-        if (!data || !data.fields) return;
-        ids.forEach(function (id) {
-          if (!(id in data.fields)) return;
-          var input = el[id];
-          if (input.type === 'checkbox') {
-            input.checked = !!data.fields[id];
-          } else {
-            input.value = data.fields[id];
-          }
-        });
-        (data.buttons || []).slice(0, MAX_BUTTONS).forEach(function (b) {
-          var row = addButtonRow(true);
-          if (!row) return;
-          row.querySelector('.b-text').value = b.text || '';
-          row.querySelector('.b-url').value = b.url || '';
-          if (b.color) row.querySelector('.b-color').value = b.color;
-        });
+        applyState(data);
       }
+
+      // ============= EXPORT / IMPORT =============
+      function fileNameFor(state) {
+        var base = (state.fields['sig-name'] || state.fields['sig-company'] || 'email-signature')
+          .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        return (base || 'email-signature') + '-signature.json';
+      }
+
+      document.getElementById('export-btn').addEventListener('click', function () {
+        var state = collectState();
+        var blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = fileNameFor(state);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        importStatus.textContent = 'Settings exported.';
+        setTimeout(function () { importStatus.textContent = ''; }, 4000);
+      });
+
+      document.getElementById('import-file').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+          var data;
+          try {
+            data = JSON.parse(ev.target.result);
+          } catch (err) {
+            importStatus.textContent = 'That file could not be read. Pick a settings file exported from this tool.';
+            return;
+          }
+          if (!applyState(data)) {
+            importStatus.textContent = 'That file is not a signature settings file.';
+            return;
+          }
+          render();
+          importStatus.textContent = 'Settings imported from ' + file.name + '.';
+          setTimeout(function () { importStatus.textContent = ''; }, 6000);
+        };
+        reader.onerror = function () {
+          importStatus.textContent = 'That file could not be read.';
+        };
+        reader.readAsText(file);
+        e.target.value = ''; // allow importing the same file again
+      });
 
       // ============= SOCIAL ICON URLS =============
       var ICONS = {

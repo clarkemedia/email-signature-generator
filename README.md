@@ -9,6 +9,7 @@ A free, open-source tool for creating professional HTML email signatures. No sig
 - **Fully customizable** — name, title, company, phone, email, website, address, logo, font, text size, accent colour, social links, buttons, and disclaimer
 - **Live preview** — see changes instantly as you type
 - **Saved in your browser** — your details are kept on your own device, so you can come back later and change a phone number or job title without starting again. Nothing is uploaded, and one tick box forgets everything
+- **Export & import** — save your details to a small file to back them up, move them to another computer, share them with colleagues, or keep one file per signature
 - **Tidy, collapsible form** — sections open one at a time so the preview stays in view
 - **13 web-safe fonts and 4 text sizes** — from Arial and Calibri to Georgia and Garamond, in Small, Medium, Large or Extra Large
 - **Address fields** — street, city, postcode/zip and country, shown on a single line

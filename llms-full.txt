@@ -106,6 +106,10 @@ The generated signature uses:
 
 Everything entered is stored in the browser's localStorage on the device being used, so the form is still filled in on the next visit and a single field such as a phone number or job title can be changed without re-entering the rest. Nothing is uploaded or sent to a server. A "Save my details in this browser" tick box under the preview is on by default. Unticking it deletes what was stored and stops further saving, and "Reset to defaults" clears the entries.
 
+## Export and Import
+
+Export settings writes the current details to a small JSON file that downloads to the device, named after the person or company. Import settings reads such a file back in and fills the form. This works on any device, so settings can be backed up, carried between computers, shared with colleagues, or kept as several files for people who use more than one signature. Files are read in the browser and never uploaded. An imported file only ever fills form fields, and all output is escaped.
+
 ## Technical Details
 
 - Single HTML file, no build step, no frameworks, no dependencies
