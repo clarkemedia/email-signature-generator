@@ -667,6 +667,11 @@
         <button class="btn btn-secondary" id="copy-html" type="button">Copy HTML source</button>
         <button class="btn btn-outline" id="reset-btn" type="button">Reset to defaults</button>
       </div>
+      <div class="checkbox-field" style="margin-top: 16px;">
+        <input type="checkbox" id="sig-remember" checked>
+        <label for="sig-remember">Save my details in this browser</label>
+      </div>
+      <div class="field-hint" style="margin-top: 0;">Your details are kept in this browser so you can come back later and change a phone number or job title without filling everything in again. Nothing is sent anywhere. <strong>Reset to defaults</strong> wipes what you entered, and unticking this box forgets it completely. <span id="save-status"></span></div>
     </div>
 
     <!-- ============= INSTRUCTIONS PANEL ============= -->
@@ -824,6 +829,84 @@
           defaults[id] = input.value;
         }
       });
+
+      // ============= SAVED DETAILS (this browser only) =============
+      // Everything is kept in localStorage on this device. Nothing is sent anywhere.
+      var STORAGE_KEY = 'emailSignatureGenerator';
+      var REMEMBER_KEY = 'emailSignatureGenerator-remember';
+      var rememberBox = document.getElementById('sig-remember');
+      var saveStatus = document.getElementById('save-status');
+
+      function storage() {
+        try {
+          var s = window.localStorage;
+          s.setItem(STORAGE_KEY + '-test', '1');
+          s.removeItem(STORAGE_KEY + '-test');
+          return s;
+        } catch (e) {
+          return null; // private browsing, storage disabled, or opened from file:// in some browsers
+        }
+      }
+
+      function forgetSaved() {
+        var s = storage();
+        if (s) { try { s.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ } }
+      }
+
+      function saveState() {
+        var s = storage();
+        if (!s) return;
+        if (!rememberBox.checked) { forgetSaved(); return; }
+        var data = { version: 1, fields: {}, buttons: [] };
+        ids.forEach(function (id) {
+          var input = el[id];
+          data.fields[id] = input.type === 'checkbox' ? input.checked : input.value;
+        });
+        buttonList.querySelectorAll('.button-row').forEach(function (row) {
+          data.buttons.push({
+            text: row.querySelector('.b-text').value,
+            url: row.querySelector('.b-url').value,
+            color: row.querySelector('.b-color').value
+          });
+        });
+        try {
+          s.setItem(STORAGE_KEY, JSON.stringify(data));
+          saveStatus.textContent = '';
+        } catch (e) {
+          // Usually an uploaded logo pushing the browser over its storage limit
+          saveStatus.textContent = 'Your details could not be saved, most likely because an uploaded logo is too large. Use a logo URL instead.';
+        }
+      }
+
+      function loadState() {
+        var s = storage();
+        if (!s) return;
+        try {
+          if (s.getItem(REMEMBER_KEY) === 'off') { rememberBox.checked = false; return; }
+        } catch (e) { return; }
+        var raw;
+        try { raw = s.getItem(STORAGE_KEY); } catch (e) { return; }
+        if (!raw) return;
+        var data;
+        try { data = JSON.parse(raw); } catch (e) { forgetSaved(); return; }
+        if (!data || !data.fields) return;
+        ids.forEach(function (id) {
+          if (!(id in data.fields)) return;
+          var input = el[id];
+          if (input.type === 'checkbox') {
+            input.checked = !!data.fields[id];
+          } else {
+            input.value = data.fields[id];
+          }
+        });
+        (data.buttons || []).slice(0, MAX_BUTTONS).forEach(function (b) {
+          var row = addButtonRow(true);
+          if (!row) return;
+          row.querySelector('.b-text').value = b.text || '';
+          row.querySelector('.b-url').value = b.url || '';
+          if (b.color) row.querySelector('.b-color').value = b.color;
+        });
+      }
 
       // ============= SOCIAL ICON URLS =============
       var ICONS = {
@@ -1062,6 +1145,7 @@
 
         h += '</table>';
         preview.innerHTML = h;
+        saveState();
       }
 
       // ============= EVENT LISTENERS =============
@@ -1086,8 +1170,8 @@
       el['sig-size'].addEventListener('change', render);
 
       // ============= CTA BUTTON LIST =============
-      function addButtonRow() {
-        if (buttonList.children.length >= MAX_BUTTONS) return;
+      function addButtonRow(quiet) {
+        if (buttonList.children.length >= MAX_BUTTONS) return null;
         var first = buttonList.querySelector('.b-color');
         var color = first && el['sig-btn-same-color'].checked ? first.value : DEFAULT_BUTTON_COLOR;
         var row = document.createElement('div');
@@ -1098,11 +1182,25 @@
           '<div class="field"><input class="b-color" type="color" value="' + color + '" aria-label="Button colour" title="Button colour"></div>' +
           '<button type="button" class="b-remove" aria-label="Remove button" title="Remove button">&times;</button>';
         buttonList.appendChild(row);
+        if (quiet) return row;
         render();
         row.querySelector('.b-text').focus();
+        return row;
       }
 
-      addButtonBtn.addEventListener('click', addButtonRow);
+      addButtonBtn.addEventListener('click', function () { addButtonRow(); });
+
+      rememberBox.addEventListener('change', function () {
+        var s = storage();
+        if (rememberBox.checked) {
+          if (s) { try { s.removeItem(REMEMBER_KEY); } catch (e) { /* ignore */ } }
+          saveState();
+        } else {
+          forgetSaved();
+          if (s) { try { s.setItem(REMEMBER_KEY, 'off'); } catch (e) { /* ignore */ } }
+          saveStatus.textContent = '';
+        }
+      });
 
       buttonList.addEventListener('input', function (e) {
         // With "same colour" ticked, changing any button colour applies to all of them
@@ -1223,6 +1321,8 @@
           }
         });
         buttonList.innerHTML = '';
+        forgetSaved();
+        saveStatus.textContent = '';
         render();
       });
 
@@ -1263,6 +1363,7 @@
       });
 
       // ============= INITIAL RENDER =============
+      loadState();
       render();
     })();
   </script>
