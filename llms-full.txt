@@ -102,6 +102,10 @@ The generated signature uses:
 - Light mode — white/light background preview
 - Dark mode — dark background preview to check visibility of logos and text
 
+## Saved Details
+
+Everything entered is stored in the browser's localStorage on the device being used, so the form is still filled in on the next visit and a single field such as a phone number or job title can be changed without re-entering the rest. Nothing is uploaded or sent to a server. A "Save my details in this browser" tick box under the preview is on by default. Unticking it deletes what was stored and stops further saving, and "Reset to defaults" clears the entries.
+
 ## Technical Details
 
 - Single HTML file, no build step, no frameworks, no dependencies
