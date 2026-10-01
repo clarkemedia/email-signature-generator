@@ -24,6 +24,7 @@ A free, open-source tool for creating professional HTML email signatures. No sig
 - **Setup instructions** — step-by-step guides for Outlook (new, classic, Mac), Gmail, and Apple Mail
 - **Zero dependencies** — single HTML file, no build step, no frameworks
 - **Works offline** — download and open locally, no internet required (except for Google Fonts and social icons)
+- **Version shown in the footer** — with a quiet check that tells you when a newer release is out (see below)
 
 ## How to Use
 
@@ -63,6 +64,38 @@ The image is published for `linux/amd64`, `linux/arm64` and `linux/arm/v7`, so i
 ### Self-hosted
 
 Just serve `index.html` from any web server or CDN. It's a single file with no build step.
+
+## Staying Up To Date
+
+The version you are running is shown at the bottom of the page, next to the MIT License link.
+
+Once a day the page asks GitHub for the latest release number. If your copy is older, a small banner appears at the top with a link to the release notes. It sends nothing about you or your signature, it only reads a public version number, and it stays silent when you are offline, when you open the file directly from disk, or if the request fails. The result is cached for 24 hours.
+
+To switch it off, open `index.html` and set `UPDATE_CHECK` to `false` in the script near the update check section. The banner never appears again and no request is made.
+
+### Updating Docker
+
+```bash
+docker pull ghcr.io/clarkemedia/email-signature-generator:latest
+docker compose up -d
+```
+
+To update automatically, point your usual tool at the `latest` tag. With [Watchtower](https://containrrr.dev/watchtower/) for example:
+
+```yaml
+services:
+  signature-generator:
+    image: ghcr.io/clarkemedia/email-signature-generator:latest
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+```
+
+Prefer to pin a version and update when you choose? Use a version tag such as `:1.4.0` or `:1.4` instead of `latest`.
+
+For a plain self-hosted copy, replace `index.html` with the one from the newest release.
 
 ## Customizing the Defaults
 

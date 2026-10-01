@@ -43,6 +43,32 @@
       margin: 0;
     }
 
+    /* Update banner */
+    .update-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #f0f7fb;
+      border-left: 3px solid #17599A;
+      border-radius: 4px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #444;
+    }
+    .update-banner a { color: #17599A; font-weight: 500; }
+    .update-banner button {
+      border: 0;
+      background: transparent;
+      color: #888;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 2px;
+    }
+    .update-banner button:hover { color: #444; }
+
     /* Panels */
     .panel {
       background: #fff;
@@ -448,6 +474,12 @@
       <p class="page-subtitle">Create a professional email signature in seconds. No sign-up, no tracking, fully open source.</p>
     </div>
 
+    <!-- Shown only when a newer release exists. See UPDATE_CHECK in the script below. -->
+    <div class="update-banner" id="update-banner" hidden>
+      <span id="update-text"></span>
+      <button type="button" id="update-dismiss" aria-label="Dismiss">&times;</button>
+    </div>
+
     <!-- ============= FORM PANEL ============= -->
     <div class="panel">
 
@@ -767,7 +799,9 @@
     <p>
       Made by <a href="https://clarkemedia.ie" target="_blank" rel="noopener noreferrer">Eoin McMahon</a> &middot;
       <a href="https://github.com/clarkemedia/email-signature-generator" target="_blank" rel="noopener noreferrer">View on GitHub</a> &middot;
-      MIT License
+      MIT License &middot;
+      <!-- Bump this on every release: it is also what the update check compares against -->
+      <a href="https://github.com/clarkemedia/email-signature-generator/releases" target="_blank" rel="noopener noreferrer" id="app-version">v1.4.0</a>
     </p>
   </footer>
 
@@ -982,6 +1016,66 @@
         e.target.value = ''; // allow importing the same file again
       });
 
+      // ============= UPDATE CHECK =============
+      // Self-hosted copies get stale, so once a day the page asks GitHub for the
+      // latest release number and shows a banner if this copy is behind. It sends
+      // nothing about you, it only reads a public release number, and it fails
+      // quietly when offline or opened from a file. Self-hosters who want no
+      // outside requests at all can set this to false.
+      var UPDATE_CHECK = true;
+      var APP_VERSION = document.getElementById('app-version').textContent.replace(/^v/, '');
+      var LATEST_RELEASE_API = 'https://api.github.com/repos/clarkemedia/email-signature-generator/releases/latest';
+      var RELEASES_PAGE = 'https://github.com/clarkemedia/email-signature-generator/releases/latest';
+      var UPDATE_CACHE_KEY = 'emailSignatureGenerator-updateCheck';
+      var DAY = 24 * 60 * 60 * 1000;
+
+      function isNewer(a, b) {
+        var x = String(a).split('.').map(Number);
+        var y = String(b).split('.').map(Number);
+        for (var i = 0; i < 3; i++) {
+          var p = x[i] || 0, q = y[i] || 0;
+          if (p !== q) return p > q;
+        }
+        return false;
+      }
+
+      function showUpdateBanner(latest) {
+        var banner = document.getElementById('update-banner');
+        var text = document.getElementById('update-text');
+        text.innerHTML = 'Version <strong>' + esc(latest) + '</strong> is available. This copy is version ' + esc(APP_VERSION) +
+          '. <a href="' + RELEASES_PAGE + '" target="_blank" rel="noopener noreferrer">See what changed</a>.';
+        banner.hidden = false;
+        document.getElementById('update-dismiss').addEventListener('click', function () {
+          banner.hidden = true;
+        });
+      }
+
+      function checkForUpdate() {
+        if (!UPDATE_CHECK) return;
+        if (location.protocol === 'file:' || !window.fetch) return;
+        var s = storage();
+        var cached = null;
+        if (s) {
+          try { cached = JSON.parse(s.getItem(UPDATE_CACHE_KEY) || 'null'); } catch (e) { cached = null; }
+        }
+        if (cached && cached.latest && Date.now() - cached.checkedAt < DAY) {
+          if (isNewer(cached.latest, APP_VERSION)) showUpdateBanner(cached.latest);
+          return;
+        }
+        fetch(LATEST_RELEASE_API, { headers: { Accept: 'application/vnd.github+json' } })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (!data || typeof data.tag_name !== 'string') return;
+            var latest = data.tag_name.replace(/^v/, '');
+            if (!/^\d+(\.\d+){0,2}$/.test(latest)) return;
+            if (s) {
+              try { s.setItem(UPDATE_CACHE_KEY, JSON.stringify({ latest: latest, checkedAt: Date.now() })); } catch (e) { /* ignore */ }
+            }
+            if (isNewer(latest, APP_VERSION)) showUpdateBanner(latest);
+          })
+          .catch(function () { /* offline, rate limited or blocked: stay quiet */ });
+      }
+
       // ============= SOCIAL ICON URLS =============
       var ICONS = {
         linkedin:  'https://img.icons8.com/color/48/linkedin.png',
@@ -1177,15 +1271,26 @@
         }
 
         // ---- FOOTER SECTION ----
+        // Divider lines are a cell border, not a 1px cell with a background colour.
+        // Several clients (Proton Mail, Outlook) force a minimum row height, which
+        // turned a coloured cell into a thick bar. A border stays 1px whatever the
+        // row does, and the spacer height below doubles as the gap under the line.
+        function dividerRow(spaceAbove) {
+          var h = '';
+          if (spaceAbove) {
+            h += '<tr><td colspan="' + cols + '" height="' + spaceAbove + '" style="height: ' + spaceAbove + 'px; font-size: ' + spaceAbove + 'px; line-height: ' + spaceAbove + 'px; mso-line-height-rule: exactly;">&nbsp;</td></tr>';
+          }
+          h += '<tr><td colspan="' + cols + '" height="10" style="border-top: 1px solid ' + c + '; height: 10px; font-size: 10px; line-height: 10px; mso-line-height-rule: exactly;">&nbsp;</td></tr>';
+          return h;
+        }
+
         if (hasFooter) {
           // Top divider
-          h += '<tr><td colspan="' + cols + '" style="padding-top: 14px; font-size: 0; line-height: 0;">';
-          h += '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td height="1" style="height: 1px; background-color: ' + c + '; font-size: 0; line-height: 0;">&nbsp;</td></tr></table>';
-          h += '</td></tr>';
+          h += dividerRow(14);
 
           // Social icons
           if (hasSocials) {
-            h += '<tr><td colspan="' + cols + '" style="padding-top: 10px; padding-bottom: 10px; line-height: 0;">';
+            h += '<tr><td colspan="' + cols + '" style="padding-bottom: 10px; line-height: 0;">';
             h += '<table cellpadding="0" cellspacing="0" border="0"><tr>';
             socials.forEach(function (s, i) {
               var pr = i < socials.length - 1 ? '8' : '0';
@@ -1199,9 +1304,7 @@
 
             // Divider between socials and disclaimer
             if (hasDisclaimer) {
-              h += '<tr><td colspan="' + cols + '" style="font-size: 0; line-height: 0;">';
-              h += '<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td height="1" style="height: 1px; background-color: ' + c + '; font-size: 0; line-height: 0;">&nbsp;</td></tr></table>';
-              h += '</td></tr>';
+              h += dividerRow(0);
             }
           }
 
@@ -1211,7 +1314,8 @@
             // Bold the first word before a colon if present (e.g. "Important:")
             dText = dText.replace(/^([^:&<]+:)/, '<strong style="color: #555555;">$1</strong>');
 
-            h += '<tr><td colspan="' + cols + '" style="font-family: ' + f + '; font-size: ' + sz.disclaimer + 'px; color: #666666; line-height: 1.5; padding-top: 10px;">';
+            // No padding needed above: the divider row already leaves a 10px gap
+            h += '<tr><td colspan="' + cols + '" style="font-family: ' + f + '; font-size: ' + sz.disclaimer + 'px; color: #666666; line-height: 1.5;">';
             h += dText;
             h += '</td></tr>';
           }
@@ -1439,6 +1543,7 @@
       // ============= INITIAL RENDER =============
       loadState();
       render();
+      checkForUpdate();
     })();
   </script>
 </body>
