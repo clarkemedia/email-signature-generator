@@ -157,6 +157,7 @@
     }
 
     /* Update banner */
+    .update-banner[hidden] { display: none; } /* must beat the display: flex below */
     .update-banner {
       display: flex;
       align-items: center;
@@ -1004,7 +1005,7 @@
       <a href="https://github.com/clarkemedia/email-signature-generator" target="_blank" rel="noopener noreferrer">View on GitHub</a> &middot;
       MIT License &middot;
       <!-- Bump this on every release: it is also what the update check compares against -->
-      <a href="https://github.com/clarkemedia/email-signature-generator/releases" target="_blank" rel="noopener noreferrer" id="app-version">v1.4.0</a>
+      <a href="https://github.com/clarkemedia/email-signature-generator/releases" target="_blank" rel="noopener noreferrer" id="app-version">v1.4.1</a>
     </p>
   </footer>
 
@@ -1220,12 +1221,12 @@
       });
 
       // ============= UPDATE CHECK =============
-      // Self-hosted copies get stale, so once a day the page asks GitHub for the
-      // latest release number and shows a banner if this copy is behind. It sends
-      // nothing about you, it only reads a public release number, and it fails
-      // quietly when offline or opened from a file. Self-hosters who want no
-      // outside requests at all can set this to false.
-      var UPDATE_CHECK = true;
+      // Off by default: a self-hosted copy should make no outside requests unless
+      // you ask it to. Set this to true and, once a day, the page asks GitHub for
+      // the latest release number and shows a banner when this copy is behind. It
+      // sends nothing about you, it only reads a public release number, it caches
+      // the answer for 24 hours, and it stays quiet offline or opened from a file.
+      var UPDATE_CHECK = true; // the live site keeps this on; the self-hosted default is off
       var APP_VERSION = document.getElementById('app-version').textContent.replace(/^v/, '');
       var LATEST_RELEASE_API = 'https://api.github.com/repos/clarkemedia/email-signature-generator/releases/latest';
       var RELEASES_PAGE = 'https://github.com/clarkemedia/email-signature-generator/releases/latest';
