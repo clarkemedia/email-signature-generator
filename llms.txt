@@ -14,6 +14,7 @@ https://signatures.clarkemedia.ie
 
 - Fully customizable: name, job title, company, phone, email, website, address, logo, logo size, accent colour, font, text size, social links, call-to-action buttons, disclaimer
 - Live preview with light and dark mode
+- Shows the version it is running and quietly tells you when a newer release is out
 - Details are saved in your own browser so you can edit your signature later without retyping everything, and a tick box forgets them again
 - Export and import your settings as a small file to back them up, move them between computers, share them with colleagues, or keep several signatures
 - One-click copy as rich text (paste into email client) or raw HTML source
