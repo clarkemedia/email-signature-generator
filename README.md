@@ -69,9 +69,11 @@ Just serve `index.html` from any web server or CDN. It's a single file with no b
 
 The version you are running is shown at the bottom of the page, next to the MIT License link.
 
-Once a day the page asks GitHub for the latest release number. If your copy is older, a small banner appears at the top with a link to the release notes. It sends nothing about you or your signature, it only reads a public version number, and it stays silent when you are offline, when you open the file directly from disk, or if the request fails. The result is cached for 24 hours.
+A self-hosted copy has no way of knowing a new version is out, so the page can tell you. This is **off by default**, because a copy you host should make no outside requests unless you ask it to.
 
-To switch it off, open `index.html` and set `UPDATE_CHECK` to `false` in the script near the update check section. The banner never appears again and no request is made.
+To turn it on, open `index.html` and set `UPDATE_CHECK` to `true` in the script near the update check section. Once a day the page then asks GitHub for the latest release number, and if your copy is older a small dismissible banner appears at the top with a link to the release notes.
+
+Even switched on it sends nothing about you or your signature. It reads a public version number, caches the answer for 24 hours, and stays silent when you are offline, when you open the file directly from disk, or if the request fails.
 
 ### Updating Docker
 
